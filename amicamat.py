@@ -3,8 +3,21 @@
 
 from datetime import date
 from sys import exit
+from os import path
 
-thetext = open("thetext.txt", "r")
+# PyInstaller needs to find the resource files
+# in its temp folder.
+# https://stackoverflow.com/questions/7674790/bundling-data-files-with-pyinstaller-onefile
+def res_path(rel_path):
+	try:
+		base_path = sys._MEIPASS
+	except Exception:
+		base_path = path.abspath(".")
+	return path.join(base_path, rel_path)
+
+file = res_path("thetext.txt")
+
+thetext = open(file, "r")
 # Put all the file in an array, one item per line
 verses = thetext.readlines()
 thetext.close()
